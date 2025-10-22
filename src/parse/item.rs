@@ -1,7 +1,5 @@
 use std::{fmt::Debug, str::FromStr, sync::LazyLock};
-
 use regex::Regex;
-
 use crate::parse::error::{ParseError, ParseResult};
 
 #[derive(Debug)]
@@ -17,7 +15,7 @@ pub enum Atom {
 	Word(String),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Value {
 	Int(i32),
 	Float(f32),
@@ -81,7 +79,7 @@ pub fn parse_item<'a>(mut tokens: &'a [&'a str]) -> ParseResult<(Item, &'a [&'a 
 		}
 	}
 
-	Ok((Item::Stack(items), tokens))
+	Ok((Item::Block(items), tokens))
 }
 
 static INT_PATTERN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[0-9]+$").unwrap());
